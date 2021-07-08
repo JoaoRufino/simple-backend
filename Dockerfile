@@ -5,11 +5,11 @@ COPY go.mod .
 COPY app.go .
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
 
-FROM simple-frotend as static
+FROM simple-frontend as static
 
 FROM scratch
 WORKDIR app
 COPY --from=builder /go/src/github.com/joaorufino/simple-backend/app .
-COPY --from=static /static/index.html ./static/index.html
+COPY --from=static /static/* ./static/
 EXPOSE 8000
 CMD ["./app"]
